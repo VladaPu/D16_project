@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+{% extends 'flatpages/default.html' %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        Отклики
+        {% endblock title%}
+    </title>
+</head>
+<body>
+    {% block content %}
+        <div class="container">
+        <h4 class="my-4">Отклики на мои объявления</h4>
+
+        <hr>
+
+        {% if responses %}
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Объявление</th>
+                    <th>Отклик</th>
+                    <th>Статус</th>
+                    <th>Автор</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for response in responses %}
+                    <tr>
+                        <td>{{ response.post.title }}</td>
+                        <td>{{ response.text }}</td>
+                        <td>{{ response.get_status_display }}</td>
+                        <td>{{ response.author }}</td>
+                        <td>
+                            {% if response.status == 'U' %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input type="hidden" name="pk" id="pk" value={{ response.pk }}>
+                                    <input type="submit" class="btn btn-success btn-sm" name="accepted" value="Принять"/>
+                                    <input type="submit" class="btn btn-danger btn-sm" name="deleted" value="Отклонить"/>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Нет откликов</p>
+        {% endif %}
+
+
+    {% endblock content%}
+
+</body>
+</html>

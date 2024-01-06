@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% extends 'flatpages/default.html' %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        Posts
+        {% endblock title%}
+    </title>
+</head>
+<body>
+    {% block content %}
+        <h1>Все новости</h1>
+        <h3>Всего новостей: {{ posts|length }}</h3>
+
+        {% if posts %}
+            <table align="center">
+                <tr>
+                    <th>Заголовок</th>
+                    <th>Время публикации</th>
+                    <th>Категория</th>
+                    <th>Автор</th>
+                    <th>Действие</th>
+
+                </tr>
+                {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.dateCreation|date:'d M Y'}}</td>
+                    <td>{{ post.category }}</td>
+                    <td>{{ post.author }}</td>
+                    <td>
+                    <a href="{% url 'post_detail' pk=post.id %}"> Просмотр </a>
+                    </td>
+                {% endfor %}
+        {% endif %}
+    {% endblock content%}
+</body>
+</html>

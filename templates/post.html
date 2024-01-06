@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends 'flatpages/default.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        Post_detail
+        {% endblock title%}
+    </title>
+</head>
+<body>
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <h5>{{ post.dateCreation| date:'d M Y' }}</h5>
+    <h5>{{ post.author }}</h5>
+    <h5>{{ post.content| safe }}</h5>
+    {% if request.user.is_authenticated %}
+        <br>
+        <a href="{% url 'post_update' pk=post.id %}"> Редактировать </a>
+        <a href="{% url 'post_delete' pk=post.id %}"> Удалить </a>
+        </br>
+    {% endif %}
+{% endblock content%}
+
+
+</body>
+</html>
